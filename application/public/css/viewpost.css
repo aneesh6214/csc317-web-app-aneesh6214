@@ -1,0 +1,64 @@
+/* video */
+video {
+    width: 100%;
+    max-width: 800px;
+    display: block;
+    margin: 2rem auto;
+}
+
+/* comment section */
+h2 {
+    margin-top: 2rem;
+}
+
+form {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px #444;
+}
+
+form label {
+    display: block;
+    margin: 0.5rem 0;
+}
+
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+form textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+form button[type="submit"] {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #444;
+    border: none;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #333;
+}
+
+div {
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+div p {
+    padding: 1rem;
+    background-color: #fff;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
