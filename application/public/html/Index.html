@@ -4,6 +4,7 @@
 <head>
   <title>My Website</title>
   <link rel="stylesheet" type="text/css" href="../css/style.css" />
+  <script defer src="../js/index.js"></script>
 </head>
 
 <body>
@@ -22,7 +23,9 @@
   </header>
   <main>
     <h2>Thanks for visiting my website!</h2>
-    <p>Stay tuned for more!</p>
+    <button id="fetchPhotosBtn">Fetch Photos</button>
+    <div class="photo-container" id="photoContainer"></div>
+    <p id="photoCount">Number of Photos: 0</p>
   </main>
   <footer>
     <p>Footer</p>
