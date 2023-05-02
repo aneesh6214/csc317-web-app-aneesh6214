@@ -1,64 +1,44 @@
-/* video */
-video {
-    width: 100%;
+main {
     max-width: 800px;
-    display: block;
-    margin: 2rem auto;
+    margin: 0 auto;
 }
 
-/* comment section */
-h2 {
-    margin-top: 2rem;
+.video-container {
+    margin-bottom: 30px;
 }
 
-form {
-    max-width: 400px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    box-shadow: 0 2px 4px #444;
+.post-title {
+    font-size: 28px;
+    margin-top: 0;
 }
 
-form label {
-    display: block;
-    margin: 0.5rem 0;
+.post-date {
+    font-style: italic;
+    margin-top: 0;
 }
 
-form input[type="text"],
-form textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
+.post-content {
+    line-height: 1.5;
 }
 
-form textarea {
-    height: 100px;
-    resize: vertical;
+.comment-section {
+    margin-top: 50px;
 }
 
-form button[type="submit"] {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    color: #fff;
-    background-color: #444;
-    border: none;
-    cursor: pointer;
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
-form button[type="submit"]:hover {
-    background-color: #333;
+.comment-username {
+    font-weight: bold;
 }
 
-div {
-    max-width: 600px;
-    margin: 2rem auto;
+.comment-date {
+    font-style: italic;
 }
 
-div p {
-    padding: 1rem;
-    background-color: #fff;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.comment-form {
+    margin-top: 20px;
 }

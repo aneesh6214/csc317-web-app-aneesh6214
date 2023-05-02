@@ -1,0 +1,22 @@
+<main>
+	<link rel="stylesheet" type="text/css" href="../public/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../public/css/postvideo.css" />
+	<section>
+		<h2>Post a Video</h2>
+		<form action="postvideo_submit.html" method="post">
+			<label for="post-title">Title:</label>
+			<input type="text" id="post-title" name="post-title" required>
+			<br>
+			<label for="post-description">Description:</label>
+			<textarea id="post-description" name="post-description" required></textarea>
+			<br>
+			<label for="video-file">Video:</label>
+			<input type="file" id="video-file" name="video-file" accept="video/*" required>
+			<br>
+			<label for="accept-policy">Acceptable Use Policy:</label>
+			<input type="checkbox" id="accept-policy" name="accept-policy" required>
+			<br>
+			<input type="submit" value="Submit">
+		</form>
+	</section>
+</main>
