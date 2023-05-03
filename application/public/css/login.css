@@ -1,4 +1,12 @@
-/* login form styling */
+main {
+    text-align: center;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
 form {
     max-width: 400px;
     margin: 2rem auto;
@@ -10,6 +18,7 @@ form {
 form label {
     display: block;
     margin: 0.5rem 0;
+    text-align: left;
 }
 
 form input {
@@ -31,5 +40,28 @@ form button {
 }
 
 form button:hover {
+    background-color: #333;
+}
+
+.register {
+    margin-top: 1rem;
+}
+
+.register p {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.register-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #444;
+    border: none;
+    cursor: pointer;
+}
+
+.register-btn:hover {
     background-color: #333;
 }

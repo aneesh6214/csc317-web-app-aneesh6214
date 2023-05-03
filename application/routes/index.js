@@ -23,7 +23,7 @@ router.get('/profile', function (req, res) {
 });
 
 router.get('/viewpost/:id(\\d+)', function (req, res) {
-  res.render('viewpost', { title: 'View Post ${req.params.id}', css: ["../css/viewpost.css"] });
+  res.render('viewpost', { title: 'View Post', css: ["../css/viewpost.css"] });
 });
 
 module.exports = router;
