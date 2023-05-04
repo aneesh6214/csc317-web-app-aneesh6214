@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require("http-errors");
 const express = require("express");
 const favicon = require('serve-favicon');
@@ -42,10 +43,10 @@ app.use("/users", usersRouter); // route middleware from ./routes/users.js
  * Catch all route, if we get to here then the 
  * resource requested could not be found.
  */
-app.use((req,res,next) => {
+app.use((req, res, next) => {
   next(createError(404, `The route ${req.method} : ${req.url} does not exist.`));
 })
-  
+
 
 /**
  * Error Handler, used to render the error html file
