@@ -8,6 +8,7 @@
     "grade": "npm i && node ./bin/dbloader  && nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "colors": "^1.4.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",

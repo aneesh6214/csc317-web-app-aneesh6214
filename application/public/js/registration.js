@@ -4,13 +4,14 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         if (validateForm()) {
-            alert("Form submitted successfully!");
+            //alert("Form submitted successfully!");
             form.submit();
         }
     });
 });
 
 function validateForm() {
+    return true;
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
