@@ -6,6 +6,11 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const handlebars = require("express-handlebars");
+
+const sessions = require("express-session");
+const mysqlStore = require("express-mysql-session")(sessions);
+const flash = require("express-flash");
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
@@ -18,7 +23,11 @@ app.engine(
     partialsDir: path.join(__dirname, "views/partials"), // where to look for partials
     extname: ".hbs", //expected file extension for handlebars files
     defaultLayout: "layout", //default layout for app, general template for all pages in app
-    helpers: {}, //adding new helpers to handlebars for extra functionality
+    helpers: {
+      nonEmptyObject: function(obj) {
+        return obj && obj.constructor === Object && Object.keys(obj).length > 0;
+      }
+    }, //adding new helpers to handlebars for extra functionality
   })
 );
 
@@ -26,14 +35,37 @@ app.engine(
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 
+const sessionStore = new mysqlStore({/* default options */}, require('./conf/database'))
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser("csc 317 secret"));
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use("/public", express.static(path.join(__dirname, "public")));
+
+app.use(sessions({
+  secret: "csc 317 secret",
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {
+    httpOnly: true,
+    secure: false
+  }
+}))
+
+app.use(flash());
+
+app.use(function(req, res, next) {
+  console.log(req.session)
+  if(req.session.user) {
+    res.locals.isLoggedIn = true;
+    res.locals.user = req.session.user;
+  }
+  next();
+})
 
 app.use("/", indexRouter); // route middleware from ./routes/index.js
 app.use("/users", usersRouter); // route middleware from ./routes/users.js

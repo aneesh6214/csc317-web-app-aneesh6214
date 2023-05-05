@@ -7,10 +7,13 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/profile">Profile</a></li>
             <li><a href="/postvideo">Post Video</a></li>
             <li><a href="/viewpost/1">View Post</a></li>
+            {{#if isLoggedIn}}
+                {{> dropdown}}
+            {{else}}
+                <li><a href="/login">Login</a></li>
+            {{/if}}
         </ul>
     </nav>
 </header>

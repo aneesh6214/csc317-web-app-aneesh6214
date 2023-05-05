@@ -18,10 +18,6 @@ router.get('/postvideo', function (req, res) {
   res.render('postvideo', { title: 'Post a Video', css: ["../css/postvideo.css"] });
 });
 
-router.get('/profile', function (req, res) {
-  res.render('profile', { title: 'Profile', css: ["../css/profile.css"] });
-});
-
 router.get('/viewpost/:id(\\d+)', function (req, res) {
   res.render('viewpost', { title: 'View Post', css: ["../css/viewpost.css"] });
 });
