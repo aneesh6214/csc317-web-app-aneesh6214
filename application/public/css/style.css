@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Akshar:wght@500&display=swap');
+
 /*general styling*/
 * {
   margin: 0;
@@ -6,14 +8,18 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Akshar', sans-serif;
   line-height: 1.6;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  color: #000;
+  min-height: 100vh;
 }
 
 /*header bar at top*/
 header {
-  background-color: #444;
+  background-color: #525c4f;
   padding: 1rem;
   color: #fff;
   display: flex;
@@ -26,6 +32,10 @@ header h1 {
   font-size: 1.5rem;
 }
 
+input[type="text"] {
+  font-family: 'Akshar', sans-serif;
+}
+
 /*search bar styling*/
 .search-bar {
   display: flex;
@@ -35,7 +45,8 @@ header h1 {
   background-color: #fff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
   margin-right: 1rem;
-  width: 400px;
+  height: 35px;
+  width: 700px;
   max-width: 100%;
 }
 
@@ -85,17 +96,21 @@ nav a {
 }
 
 nav a:hover {
-  color: #ccc;
+  color: #41d6c3;
 }
 
 /*for actual content of page*/
 main {
   padding: 2rem;
+  flex: 1;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
 main h2 {
   font-size: 2rem;
-  color: #333;
+  color: #525c4f;
   margin-bottom: 1rem;
 }
 
@@ -105,15 +120,17 @@ main p {
   margin-bottom: 1rem;
 }
 
-/*footer styilng*/
+/*footer styling*/
 footer {
-  background-color: #4b4b4b;
+  background-color: #535d50;
   color: #fff;
   padding: 1rem;
   text-align: center;
-  margin-top: 2rem;
+  margin-top: auto;
+  width: 100%;
 }
 
+/*photo gallery styling*/
 .photo-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -125,7 +142,7 @@ footer {
 .photo-card {
   width: 200px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #5596e6;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,8 +150,76 @@ footer {
   transition: opacity 0.5s;
 }
 
-.photo-card img {
-  width: 100%;
-  height: auto;
-  margin-bottom: 10px;
+.photo-card:hover {
+  opacity: 0.8;
+}
+
+.photo-card h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.photo-card p {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 1rem;
+}
+
+.photo-card button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #41d6c3;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+
+.photo-card button:hover {
+  background-color: #2dc3b2;
+}
+
+.form-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  margin-top: 2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-field label {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="password"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #f2f2f2;
+}
+
+.form-field input[type="submit"] {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #5596e6;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.5s;
+  margin-top: 1rem;
+}
+
+.form-field input[type="submit"]:hover {
+  background-color: #3d70b2;
 }
