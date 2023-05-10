@@ -1,47 +1,57 @@
-form {
-    max-width: 400px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    box-shadow: 0 2px 4px #444;
+* {
+    font-family: 'Akshar', sans-serif;
 }
 
-form label {
+input::file-selector-button {
+    font-family: 'Akshar', sans-serif;
+}
+
+.postvideo-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #F5F5F5;
+    padding: 50px 0;
+}
+
+.postvideo-title {
+    font-size: 28px;
+    margin-bottom: 50px;
+}
+
+.postvideo-label {
     display: block;
-    margin: 0.5rem 0;
+    margin-bottom: 10px;
+    text-align: left;
 }
 
-form input[type="text"],
-form textarea,
-form input[type="file"] {
+.postvideo-input {
     width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+    border: 2px solid #BFBFBF;
 }
 
-form textarea {
-    height: 100px;
-    resize: vertical;
-}
-
-form input[type="checkbox"] {
+.postvideo-checkbox {
     display: inline-block;
-    margin-right: 0.5rem;
+    margin-right: 10px;
     vertical-align: middle;
 }
 
-form input[type="submit"] {
+.postvideo-submit {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+    margin-left: 15.5%;
+    padding: 10px 20px;
+    font-size: 16px;
     color: #fff;
-    background-color: #444;
+    background-color: #E1AD01;
     border: none;
     cursor: pointer;
-    margin-top: 1rem;
 }
 
-form input[type="submit"]:hover {
-    background-color: #333;
+.postvideo-submit:hover {
+    background-color: #FFC947;
 }

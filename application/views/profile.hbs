@@ -1,14 +1,22 @@
 <main>
-  <section>
-    <h1>User Profile</h1>
-    <p>Username: {{user.username}}</p>
-    <p>Email: {{user.email}}</p>
-
-    <h2>Posts</h2>
-    <ul>
-      <li><a href="#">Your Post 1</a></li>
-      <li><a href="#">Your Post 2</a></li>
-      <li><a href="#">Your Post 3</a></li>
-    </ul>
+  <section class="profile-section">
+    <div class="profile-top">
+      <div class="profile-picture">
+        <img src="../public/sample_profile_picture.jpg" alt="Profile Picture">
+        <div class="change-picture-button-container">
+          <button class="change-picture-button">Change</button>
+        </div>
+      </div>
+      <div class="profile-details">
+        <h1 class="profile-username">{{user.username}}</h1>
+        <p class="profile-email">{{user.email}}</p>
+      </div>
+    </div>
+    <div class="profile-bottom">
+      <h2 class="profile-posts-title">Posts</h2>
+      <div class="profile-posts-grid">
+        <!-- USER VIDEO POSTS -->
+      </div>
+    </div>
   </section>
 </main>

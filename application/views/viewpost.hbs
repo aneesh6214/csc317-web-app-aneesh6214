@@ -6,36 +6,39 @@
   </div>
   <div class="post-section">
     <div class="post-content">
-      <h1 class="post-title">Title of the Blog Post</h1>
+      <h1 class="title">Title of the Blog Post</h1>
       <p class="post-date">Posted on January 1, 2023</p>
       <p class="post-description">description</p>
     </div>
     <div class="comment-section">
-      <h2>Comments</h2>
-      <div class="comment">
-        <div class="comment-header">
-          <span class="comment-username">@USERNAME</span>
-          <span class="comment-date">DATE</span>
-        </div>
-        <div class="comment-body">
-          <p>COMMENT</p>
-        </div>
-      </div>
 
-      <div class="comment">
-        <div class="comment-header">
-          <span class="comment-username">@USERNAME</span>
-          <span class="comment-date">DATE</span>
-        </div>
-        <div class="comment-body">
-          <p>COMMENT</p>
-        </div>
-      </div>
-
+      <h2 class="title">Comments</h2>
       <form class="comment-form">
-        <textarea id="comment-input" name="comment-input" placeholder="Add a comment"></textarea>
+        <input id="comment-input" name="comment-input" placeholder="Add a comment"></input>
         <button type="submit" class="comment-submit">Comment</button>
       </form>
+
+      <div class="comment">
+        <img class="comment-avatar" src="..\public\sample_profile_picture.jpg" alt="Profile Pic">
+        <div class="comment-header">
+          <span class="comment-username">@USERNAME</span>
+          <span class="comment-date">DATE</span>
+        </div>
+        <div class="comment-body">
+          <p>COMMENT</p>
+        </div>
+      </div>
+
+      <div class="comment">
+        <img class="comment-avatar" src="..\public\sample_profile_picture.jpg" alt="Profile Pic">
+        <div class="comment-header">
+          <span class="comment-username">@USERNAME</span>
+          <span class="comment-date">DATE</span>
+        </div>
+        <div class="comment-body">
+          <p>COMMENT</p>
+        </div>
+      </div>
     </div>
   </div>
 </main>
