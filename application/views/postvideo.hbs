@@ -1,12 +1,12 @@
 <main>
 	<section class="postvideo-section">
 		<h2 class="postvideo-title">Post a Video</h2>
-		<form action="postvideo_submit.html" method="post">
+		<form action="/postvideo_submit" method="post" enctype="multipart/form-data">
 			<label class="postvideo-label" for="post-title">Title:</label>
-			<input class="postvideo-input" type="text" id="post-title" name="post-title" required>
+			<input class="postvideo-input" type="text" id="post-title" name="title" required>
 			<br>
 			<label class="postvideo-label" for="post-description">Description:</label>
-			<textarea class="postvideo-input" id="post-description" name="post-description" required></textarea>
+			<textarea class="postvideo-input" id="post-description" name="description" required></textarea>
 			<br>
 			<label class="postvideo-label" for="video-file">Video:</label>
 			<input class="postvideo-input" type="file" id="video-file" name="video-file" accept="video/*" required>
@@ -15,5 +15,10 @@
 			<input type="checkbox" class="postvideo-checkbox" id="accept-policy" name="accept-policy" required>
 			<input class="postvideo-submit" type="submit" value="Submit">
 		</form>
+	</section>
+	<section class="flash-message">
+		{{#if flash.error}}
+		<div class="flash-error">{{flash.error}}</div>
+		{{/if}}
 	</section>
 </main>

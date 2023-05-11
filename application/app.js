@@ -24,8 +24,13 @@ app.engine(
     extname: ".hbs", //expected file extension for handlebars files
     defaultLayout: "layout", //default layout for app, general template for all pages in app
     helpers: {
-      nonEmptyObject: function(obj) {
+      nonEmptyObject: function (obj) {
         return obj && obj.constructor === Object && Object.keys(obj).length > 0;
+      },
+      formatDate: function (dateString) {
+        const date = new Date(dateString);
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
       }
     }, //adding new helpers to handlebars for extra functionality
   })
@@ -35,7 +40,7 @@ app.engine(
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
 
-const sessionStore = new mysqlStore({/* default options */}, require('./conf/database'))
+const sessionStore = new mysqlStore({/* default options */ }, require('./conf/database'))
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -44,6 +49,9 @@ app.use(cookieParser("csc 317 secret"));
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use("/public", express.static(path.join(__dirname, "public")));
+app.use('/public/uploads', express.static(path.join(__dirname, 'public/uploads')));
+
+
 
 app.use(sessions({
   secret: "csc 317 secret",
@@ -58,11 +66,12 @@ app.use(sessions({
 
 app.use(flash());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   console.log(req.session)
-  if(req.session.user) {
+  if (req.session.user) {
     res.locals.isLoggedIn = true;
     res.locals.user = req.session.user;
+    res.locals.flash = req.flash();
   }
   next();
 })
@@ -78,7 +87,6 @@ app.use("/users", usersRouter); // route middleware from ./routes/users.js
 app.use((req, res, next) => {
   next(createError(404, `The route ${req.method} : ${req.url} does not exist.`));
 })
-
 
 /**
  * Error Handler, used to render the error html file

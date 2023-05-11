@@ -1,39 +1,42 @@
+//var { displayFlashMessage } = require('./routes/users');
 //initial load
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         if (validateForm()) {
-            //alert("Form submitted successfully!");
             form.submit();
         }
     });
 });
 
 function validateForm() {
-    return true;
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
 
     if (!validateUsername(username)) {
-        alert("Invalid username");
+        alert("Invalid Username");
+        //displayFlashMessage('error', 'Invalid Username: ');
         return false;
     }
 
     if (!validateEmail(email)) {
-        alert("Invalid email");
+        alert("Invalid Email");
+        //displayFlashMessage('error', 'Invalid Email: ');
         return false;
     }
 
     if (!validatePassword(password)) {
-        alert("Invalid password");
+        alert("Password Not Complex Enough");
+        //displayFlashMessage('error', 'Invalid Password: ');
         return false;
     }
 
     if (password !== confirmPassword) {
         alert("Passwords do not match");
+        //displayFlashMessage('error', 'Passwords Do Not Match');
         return false;
     }
 

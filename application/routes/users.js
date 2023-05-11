@@ -15,7 +15,8 @@ router.post('/register', async function (req, res) {
       [username, email]
     );
     if (rows.length > 0) {
-      return res.status(409).json({ error: 'Username or email already exists' });
+      req.flash('error', 'Username or Email already exists');
+      return res.redirect('/register');
     }
 
     // Hash password
@@ -28,10 +29,12 @@ router.post('/register', async function (req, res) {
     );
 
     // Send success response
-    res.status(201).json({ message: 'User registered successfully' });
+    req.flash('success', 'User Registered Successfully');
+    return res.redirect("/")
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    req.flash('error', 'SERVER ERROR');
+    return res.redirect('/register')
   }
 });
 
@@ -68,16 +71,16 @@ router.post('/login', async function (req, res) {
     // Define user object for sessions
     var user = rows[0];
     req.session.user = {
-       userId: user.id,
-       email: user.email,
-       username: user.username
+      userId: user.id,
+      email: user.email,
+      username: user.username
     };
 
     // Send success response
     //res.status(200).json({ message: 'User logged in successfully' });
     req.flash("success", 'Log In Success!')
-      await req.session.save;
-      return res.redirect("/");
+    await req.session.save;
+    return res.redirect("/");
 
   } catch (error) {
     console.error(error);
@@ -98,9 +101,9 @@ router.get('/profile', function (req, res) {
 });
 
 //LOGOUT
-router.get('/logout', function(req, res) {
-  req.session.destroy(function(err) {
-    if(err) {
+router.get('/logout', function (req, res) {
+  req.session.destroy(function (err) {
+    if (err) {
       next(err);
     } else {
       res.redirect('/login');
@@ -108,4 +111,9 @@ router.get('/logout', function(req, res) {
   });
 });
 
+function displayFlashMessage(req, success, message) {
+  req.flash(success, message);
+}
+
 module.exports = router;
+exports.displayFlashMessage = displayFlashMessage;

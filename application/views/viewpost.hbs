@@ -1,44 +1,40 @@
 <main>
   <div class="video-container">
-    <iframe width="100%" height="600" src="https://www.youtube.com/embed/CpKofdye1eg" title="video player"
-      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen></iframe>
+    <video width="100%" height="600" controls>
+      <source src="http://localhost:3000/public{{post.video}}" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
   <div class="post-section">
     <div class="post-content">
-      <h1 class="title">Title of the Blog Post</h1>
-      <p class="post-date">Posted on January 1, 2023</p>
-      <p class="post-description">description</p>
+      <h1 class="title">{{post.title}}</h1>
+      <p class="post-date">{{formatDate post.createdAt}}</p>
+      <p class="post-description">{{post.description}}</p>
     </div>
     <div class="comment-section">
-
       <h2 class="title">Comments</h2>
-      <form class="comment-form">
+      {{#if user}}
+      <form class="comment-form" method="POST" action="/comment/{{post.id}}">
         <input id="comment-input" name="comment-input" placeholder="Add a comment"></input>
         <button type="submit" class="comment-submit">Comment</button>
       </form>
-
+      {{/if}}
+      {{#else}}
+      <p>You must be logged in to comment.</p>
+      {{/else}}
+      {{#each comments}}
       <div class="comment">
         <img class="comment-avatar" src="..\public\sample_profile_picture.jpg" alt="Profile Pic">
+        <!--TODO: UPDATE WITH USER PROFILE PICTURE-->
         <div class="comment-header">
-          <span class="comment-username">@USERNAME</span>
-          <span class="comment-date">DATE</span>
+          <span class="comment-username">@{{this.username}}</span>
+          <span class="comment-date">{{formatDate this.createdAt}}</span>
         </div>
         <div class="comment-body">
-          <p>COMMENT</p>
+          <p>{{this.commentText}}</p>
         </div>
       </div>
-
-      <div class="comment">
-        <img class="comment-avatar" src="..\public\sample_profile_picture.jpg" alt="Profile Pic">
-        <div class="comment-header">
-          <span class="comment-username">@USERNAME</span>
-          <span class="comment-date">DATE</span>
-        </div>
-        <div class="comment-body">
-          <p>COMMENT</p>
-        </div>
-      </div>
+      {{/each}}
     </div>
   </div>
 </main>
