@@ -4,6 +4,8 @@ var multer = require('multer');
 var path = require('path');
 var fs = require('fs');
 var pool = require('../conf/database');
+var pathToFFMPEG = require('ffmpeg-static');
+const { exec } = require('child_process');
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -18,16 +20,28 @@ const upload = multer({
   }),
 });
 
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Home', name: 'Aneesh Kumar', css: ['index.css'], js: ['index.js'] });
+router.get('/', async function (req, res, next) {
+  try {
+    const [rows, fields] = await pool.promise().query(
+      'SELECT * FROM posts'
+    );
+
+    const videos = rows;
+
+    res.render('index', { title: 'Home Page', videos: videos , css: ["index.css"]});
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
+
 router.get('/login', function (req, res) {
-  res.render('login', { title: 'Login', css: ['../css/login.css'] });
+  res.render('login', { title: 'Login', css: ["../css/login.css"] });
 });
 
 router.get('/register', function (req, res) {
-  res.render('registration', { title: 'Register', css: ['registration.css'], js: ['registration.js'] });
+  res.render('registration', { title: 'Register', css: ["../css/registration.css"], js: ["registration.js"] });
 });
 
 router.get('/postvideo', (req, res) => {
@@ -40,7 +54,7 @@ router.post('/postvideo_submit', upload.single('video-file'), async (req, res) =
     req.flash('error', 'You must be logged in to post a video.');
     await req.session.save();
     res.redirect('/postvideo');
-    //dont DL file if user not logged in
+    // Remove the video file if the user is not logged in
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
@@ -49,22 +63,49 @@ router.post('/postvideo_submit', upload.single('video-file'), async (req, res) =
 
   const { title, description } = req.body;
   const videoPath = req.file.path.replace('public', '').replace(/\\/g, '/');
-  const thumbnailPath = '';
+  let thumbnailPath = '';
 
-  // Check if the user ID exists
-  const userId = req.session.user.userId ? req.session.user.userId : null;
-
+  // Generate thumbnail
   try {
-    await pool.promise().query(
-      'INSERT INTO posts (title, description, video, thumbnail, fk_userid) VALUES (?, ?, ?, ?, ?)',
-      [title, description, videoPath, thumbnailPath, userId]
-    );
-    res.redirect('/');
+    const destinationOfThumbnail = `./public/videos/uploads/thumbnails/thumbnail-${req.file.filename.split(".")[0]}.png`;
+    const thumbnailCommand = `"${pathToFFMPEG}" -ss 00:00:01 -i "${req.file.path}" -y -s 200x200 -vframes 1 -f image2 "${destinationOfThumbnail}"`;
+    exec(thumbnailCommand, (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Thumbnail generation failed');
+      } else {
+        thumbnailPath = destinationOfThumbnail;
+
+        // Insert the post with the video and thumbnail paths into the database
+        pool.query(
+          'INSERT INTO posts (title, description, video, thumbnail, fk_userid) VALUES (?, ?, ?, ?, ?)',
+          [title, description, videoPath, thumbnailPath, req.session.user.userId],
+          (error, results) => {
+            if (error) {
+              console.error(error);
+              res.status(500).send('Internal Server Error');
+            } else {
+              req.flash('success', 'Video Posted Successfully!');
+              req.session.save((error) => {
+                if (error) {
+                  console.error(error);
+                  res.status(500).send('Internal Server Error');
+                } else {
+                  res.redirect('/');
+                }
+              });
+            }
+          }
+        );
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 
 router.get('/viewpost/:id(\\d+)', async function (req, res) {
@@ -82,11 +123,12 @@ router.get('/viewpost/:id(\\d+)', async function (req, res) {
 
     const post = rows[0];
 
-    //fetch comments & username
+    //fetch comments, usernames, pfps
     const [commentRows] = await pool.promise().query(
-      'SELECT comments.*, users.username FROM comments JOIN users ON comments.fk_authorId = users.id WHERE comments.fk_postId = ?',
+      'SELECT comments.*, users.username, users.profile_picture FROM comments JOIN users ON comments.fk_authorId = users.id WHERE comments.fk_postId = ?',
       [postId]
     );
+
     const comments = commentRows;
 
     res.render('viewpost', {
@@ -124,7 +166,7 @@ router.get('/deletepost/:id(\\d+)', async function (req, res) {
     // Delete record from database
     await pool.promise().query(
       'DELETE FROM posts WHERE id = ?',
-      [postId]
+      [postId] 
     );
     res.redirect('/');
   } catch (error) {

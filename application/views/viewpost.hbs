@@ -25,7 +25,7 @@
       {{/else}}
       {{#each comments}}
       <div class="comment">
-        <img class="comment-avatar" src="..\public\sample_profile_picture.jpg" alt="Profile Pic">
+        <img class="comment-avatar" src="../public/{{this.profile_picture}}" alt="Profile Pic">
         <!--TODO: UPDATE WITH USER PROFILE PICTURE-->
         <div class="comment-header">
           <span class="comment-username">@{{this.username}}</span>

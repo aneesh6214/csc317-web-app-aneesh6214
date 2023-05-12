@@ -43,13 +43,14 @@ async function makeUsersTable(connection) {
       email VARCHAR(128) NOT NULL,
       password VARCHAR(255) NOT NULL,
       username VARCHAR(64) NOT NULL,
+      profile_picture  varchar(255) DEFAULT '/default_pfp.jpg',
       createdAt DATETIME NULL DEFAULT current_timestamp,
       updatedAt DATETIME NULL DEFAULT current_timestamp,
       PRIMARY KEY (id),
       UNIQUE INDEX email_UNIQUE (email ASC) VISIBLE,
       UNIQUE INDEX id_UNIQUE (id ASC) VISIBLE,
       UNIQUE INDEX username_UNIQUE (username ASC) VISIBLE)
-    ENGINE = InnoDB;`
+    ENGINE = InnoDB; `
   );
 
   if (result && result.warningStatus > 0) {

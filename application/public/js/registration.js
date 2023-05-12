@@ -17,26 +17,26 @@ function validateForm() {
     const confirmPassword = document.getElementById("confirm-password").value;
 
     if (!validateUsername(username)) {
-        alert("Invalid Username");
-        //displayFlashMessage('error', 'Invalid Username: ');
+        //alert("Invalid Username");
+        displayFlashMessage('error', 'Invalid Username: ');
         return false;
     }
 
     if (!validateEmail(email)) {
-        alert("Invalid Email");
-        //displayFlashMessage('error', 'Invalid Email: ');
+        //alert("Invalid Email");
+        displayFlashMessage('error', 'Invalid Email: ');
         return false;
     }
 
     if (!validatePassword(password)) {
-        alert("Password Not Complex Enough");
-        //displayFlashMessage('error', 'Invalid Password: ');
+        //alert("Password Not Complex Enough");
+        displayFlashMessage('error', 'Invalid Password: ');
         return false;
     }
 
     if (password !== confirmPassword) {
-        alert("Passwords do not match");
-        //displayFlashMessage('error', 'Passwords Do Not Match');
+        //alert("Passwords do not match");
+        displayFlashMessage('error', 'Passwords Do Not Match');
         return false;
     }
 

@@ -71,7 +71,7 @@ app.use(function (req, res, next) {
   if (req.session.user) {
     res.locals.isLoggedIn = true;
     res.locals.user = req.session.user;
-    res.locals.flash = req.flash();
+    //res.locals.flash = req.flash();
   }
   next();
 })

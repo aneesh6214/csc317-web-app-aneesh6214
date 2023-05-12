@@ -78,6 +78,7 @@ router.post('/login', async function (req, res) {
       req.session.save(function (error) {
         return res.redirect("/login");
       });
+      return;
     }
 
     // Compare hashed password in database with password provided by user
@@ -89,6 +90,7 @@ router.post('/login', async function (req, res) {
       req.session.save(function (error) {
         return res.redirect("/login");
       });
+      return;
     }
 
     // Define user object for sessions
