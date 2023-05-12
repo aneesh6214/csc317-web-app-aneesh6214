@@ -2,10 +2,11 @@
   <section class="profile-section">
     <div class="profile-top">
       <div class="profile-picture">
-        <img src="../public/sample_profile_picture.jpg" alt="Profile Picture">
-        <div class="change-picture-button-container">
-          <button class="change-picture-button">Change</button>
-        </div>
+        <img src="http://localhost:3000/public{{user.profile_picture}}" alt="Profile Picture">
+        <form action="/users/upload-profile-picture" method="POST" enctype="multipart/form-data">
+          <input type="file" name="profilePicture" accept="image/jpeg, image/png">
+          <button type="submit" class="change-picture-button">Change</button>
+        </form>
       </div>
       <div class="profile-details">
         <h1 class="profile-username">{{user.username}}</h1>

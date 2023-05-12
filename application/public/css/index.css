@@ -1,0 +1,22 @@
+main h2 {
+    font-size: 6rem;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+}
+
+.video-card {
+    display: flex;
+    width: 100%;
+    border: 0.5rem solid #E1AD01;
+    border-radius: 0.5rem;
+}
+
+.video-card img {
+    width: 100%;
+}

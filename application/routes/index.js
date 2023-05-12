@@ -19,7 +19,7 @@ const upload = multer({
 });
 
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Home', name: 'Aneesh Kumar', js: ['index.js'] });
+  res.render('index', { title: 'Home', name: 'Aneesh Kumar', css: ['index.css'], js: ['index.js'] });
 });
 
 router.get('/login', function (req, res) {
@@ -38,7 +38,12 @@ router.post('/postvideo_submit', upload.single('video-file'), async (req, res) =
   // Check if the user is logged in
   if (!req.session.user) {
     req.flash('error', 'You must be logged in to post a video.');
+    await req.session.save();
     res.redirect('/postvideo');
+    //dont DL file if user not logged in
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     return;
   }
 
@@ -84,7 +89,6 @@ router.get('/viewpost/:id(\\d+)', async function (req, res) {
     );
     const comments = commentRows;
 
-    console.log("THIS IS THE PATH TO  THE VIDEO" + post.video); //temporary
     res.render('viewpost', {
       title: 'View Post',
       css: ['../css/viewpost.css'],
@@ -155,6 +159,5 @@ router.post('/comment/:postId(\\d+)', function (req, res) {
     }
   );
 });
-
 
 module.exports = router;

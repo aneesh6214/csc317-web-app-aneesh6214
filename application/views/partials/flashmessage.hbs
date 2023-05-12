@@ -1,17 +1,26 @@
 {{#if messages.success}}
-  <div id="flash-message" class="success">{{messages.success}}</div>
+<div id="flash-message" class="success">{{messages.success}}</div>
 {{/if}}
 
 {{#if messages.error}}
-  <div id="flash-message" class="error">{{messages.error}}</div>
+<div id="flash-message" class="error">{{messages.error}}</div>
 {{/if}}
 
+{{#if flash.success}}
+<div id="flash-message" class="success">{{flash.success}}</div>
+{{/if}}
+
+{{#if messages.error}}
+<div id="flash-message" class="error">{{flash.error}}</div>
+{{/if}}
+
+
+
 <script>
-  // Fade out the flash message after 3 seconds
-  setTimeout(function() {
+  setTimeout(function () {
     var flashMessage = document.getElementById('flash-message');
     flashMessage.classList.add('fade');
-    setTimeout(function() {
+    setTimeout(function () {
       flashMessage.remove();
     }, 1000);
   }, 2000);
