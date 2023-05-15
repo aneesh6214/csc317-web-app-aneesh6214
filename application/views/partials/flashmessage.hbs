@@ -13,15 +13,3 @@
 {{#if flash.error}}
 <div id="flash-message" class="error">{{flash.error}}</div>
 {{/if}}
-
-
-
-<script>
-  setTimeout(function () {
-    var flashMessage = document.getElementById('flash-message');
-    flashMessage.classList.add('fade');
-    setTimeout(function () {
-      flashMessage.remove();
-    }, 1000);
-  }, 2000);
-</script>

@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Akshar:wght@500&display=swap');
 
-/*general styling*/
 * {
   margin: 0;
   padding: 0;
@@ -18,7 +17,6 @@ body {
   min-height: 100vh;
 }
 
-/*header bar at top*/
 header {
   background-color: #525c4f;
   padding: 1rem;
@@ -38,7 +36,6 @@ input[type="text"] {
   font-family: 'Akshar', sans-serif;
 }
 
-/*search bar styling*/
 .search-bar {
   flex-grow: 1;
   display: flex;
@@ -80,7 +77,6 @@ input[type="text"] {
   background-position: center;
 }
 
-/*nav bar styling*/
 nav ul {
   list-style-type: none;
   display: inline;
@@ -102,7 +98,6 @@ nav a:hover {
   color: #41d6c3;
 }
 
-/*for actual content of page*/
 main {
   padding: 2rem;
   flex: 1;
@@ -123,9 +118,8 @@ main p {
   margin-bottom: 1rem;
 }
 
-/*footer styling*/
 footer {
-  background-color: #535d50;
+  background-color: #525c4f;
   color: #fff;
   padding: 1rem;
   text-align: center;

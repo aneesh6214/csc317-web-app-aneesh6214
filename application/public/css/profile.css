@@ -4,10 +4,9 @@
 
 .profile-section {
     background-color: #F5F5F5;
-    border: 1px solid #CCC;
     border-radius: 5px;
     margin: 2rem auto;
-    max-width: 80%;
+    max-width: 75%;
     padding: 2rem;
     box-sizing: border-box;
     display: flex;
@@ -23,13 +22,6 @@
     margin-bottom: 2rem;
 }
 
-.profile-pic {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin-right: 20px;
-}
-
 .profile-picture {
     display: flex;
     align-items: center;
@@ -41,24 +33,28 @@
     height: 100px;
     object-fit: cover;
     margin-right: 1rem;
+    border: 0.3rem solid #607658;
 }
 
 .profile-details {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: right;
+    text-align: right;
     margin-left: 2rem;
 }
 
 .profile-username {
-    font-size: 2rem;
+    font-size: 3rem;
     margin: 0;
+    color: #50634a;
 }
 
 .profile-email {
     font-size: 1.2rem;
     margin: 0;
     margin-bottom: 1rem;
+    color: #50634a;
 }
 
 .profile-bottom {
@@ -66,6 +62,107 @@
 }
 
 .profile-posts-title {
-    font-size: 1.5rem;
+    border: solid #E1AD01;
+    border-top-width: 0.75rem;
+    border-right-width: 0px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;
+    padding-top: 1rem;
+    font-size: 3rem;
     margin-bottom: 1rem;
+    color: 50634a;
+    text-align: center;
+}
+
+.change-picture-button,
+.choose-files-button {
+    display: flex;
+    max-width: 70%;
+    font-family: 'Akshar', sans-serif;
+    background-color: #607658;
+    color: white;
+    padding: 0.5rem 0.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+
+.file-input-label {
+    font-family: 'Akshar', sans-serif;
+    display: inline-block;
+    background-color: #525c4f;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input::file-selector-button {
+    background-color: #E1AD01;
+    font-family: 'Akshar', sans-serif;
+    border-style: none;
+    border-radius: 10%;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+}
+
+.video-card {
+    position: relative;
+    display: inline-block;
+    border: 0.5rem solid #525c4f;
+    border-radius: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    margin: 10px;
+    overflow: hidden;
+    /* Ensure the overlay stays within the video card */
+}
+
+.video-card img {
+    width: 100%;
+    display: block;
+}
+
+.thumbnail-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    transition: opacity 0.3s ease;
+}
+
+.video-card:hover .thumbnail-overlay {
+    opacity: 1;
+}
+
+.overlay-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.delete-button {
+    background-color: #cf4343;
+    color: #fff;
+}
+
+.view-button {
+    background-color: #476ebb;
+    color: #fff;
 }

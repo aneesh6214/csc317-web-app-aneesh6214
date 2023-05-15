@@ -1,6 +1,7 @@
 "use strict";
 const mysql = require("mysql2/promise");
 require('dotenv').config();
+
 function displayWarningMessage(warning) {
   switch (warning.Code) {
     case 1007:

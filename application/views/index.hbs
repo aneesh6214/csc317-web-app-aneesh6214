@@ -1,10 +1,25 @@
 <main>
-  <h2>Home Page {{this.thumbnail}}</h2>
+  {{#if searchResults}}
+  <h2>Search Results</h2>
+  {{#each searchResults}}
+  <div class="video-card">
+    <a href="/viewpost/{{this.id}}">
+      <img src="{{this.thumbnail}}" alt="Video Thumbnail" controls>
+    </a>
+  </div>
+  {{/each}}
+
+  {{else}}
+  <h2>Home</h2>
   {{#each videos}}
-      <div class="video-card">
-        <a href="/viewpost/{{this.id}}">
-          <img src="{{this.thumbnail}}" alt="Video Thumbnail" controls>
-        </a>
+  <div class="video-card">
+    <a href="/viewpost/{{this.id}}">
+      <img src="{{this.thumbnail}}" alt="Video Thumbnail" controls>
+      <div class="thumbnail-overlay">
+        <a href="/viewpost/{{this.id}}" class="overlay-button view-button">View</a>
       </div>
-    {{/each}}
+    </a>
+  </div>
+  {{/each}}
+  {{/if}}
 </main>

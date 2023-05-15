@@ -1,3 +1,4 @@
+//dependencies
 var express = require('express');
 var router = express.Router();
 var db = require('../conf/database');
@@ -5,27 +6,27 @@ var bcrypt = require('bcrypt');
 var multer = require('multer');
 var path = require('path');
 
-// Set up the multer storage and file upload configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/images/uploads');
-  },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    cb(null, 'profile_picture' + ext);
-  }
+//configure multer for file uploading
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'public/images/uploads');
+    },
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      const name = file.fieldname + '-' + Date.now();
+      cb(null, name + ext);
+    }
+  })
 });
-
-// Create the multer upload object
-const upload = multer({ storage: storage });
 
 //REGISTRATION
 router.post('/register', async function (req, res) {
   try {
-    // Get registration data from request body
+    //get resistration data
     const { username, email, password } = req.body;
 
-    // Check if username or email already exists in the database
+    //check if name/email is taken
     const [rows] = await db.promise().query(
       'SELECT * FROM users WHERE username = ? OR email = ?',
       [username, email]
@@ -37,24 +38,22 @@ router.post('/register', async function (req, res) {
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert user into database
+    //insert user into db
     const [result] = await db.promise().query(
       'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
       [username, email, hashedPassword]
     );
 
-    // Send success response
     req.flash('success', 'User Registered Successfully');
-    req.session.save(function (error) {
+    req.session.save((error) => {
       return res.redirect("/");
     });
   } catch (error) {
     console.error(error);
     req.flash('error', 'SERVER ERROR');
-    req.session.save(function (error) {
+    req.session.save((error) => {
       return res.redirect("/register");
     });
   }
@@ -63,16 +62,16 @@ router.post('/register', async function (req, res) {
 //LOGIN
 router.post('/login', async function (req, res) {
   try {
-    // Get login data from request body
+    //get login data
     const { username, password } = req.body;
 
-    // Find user by username in database
+    //find user from db
     const [rows] = await db.promise().query(
       'SELECT * FROM users WHERE username = ?',
       [username]
     );
 
-    // If user not found, send error response
+    //invalid username
     if (rows.length === 0) {
       req.flash("error", 'Log In Failed: Invalid username/password');
       req.session.save(function (error) {
@@ -81,10 +80,10 @@ router.post('/login', async function (req, res) {
       return;
     }
 
-    // Compare hashed password in database with password provided by user
+    //compare passwords
     const passwordsMatch = await bcrypt.compare(password, rows[0].password);
 
-    // If passwords don't match, send error response
+    //invalid password
     if (!passwordsMatch) {
       req.flash("error", 'Log In Failed: Invalid username/password');
       req.session.save(function (error) {
@@ -93,7 +92,7 @@ router.post('/login', async function (req, res) {
       return;
     }
 
-    // Define user object for sessions
+    //define user object for sessions
     const user = rows[0];
     req.session.user = {
       userId: user.id,
@@ -102,9 +101,8 @@ router.post('/login', async function (req, res) {
       profile_picture: user.profile_picture // Update to the correct column name
     };
 
-    // Send success response
     req.flash("success", 'Log In Success!');
-    req.session.save(function (error) {
+    req.session.save((error) => {
       return res.redirect("/");
     });
 
@@ -114,31 +112,55 @@ router.post('/login', async function (req, res) {
   }
 });
 
+//PROFILE PAGE
 router.get('/profile', function (req, res) {
   if (req.session.user) {
-    // User is logged in, render profile template
-    res.render('profile', { title: 'Profile', css: ["../css/profile.css"] });
+    const userId = req.session.user.userId;
+
+    //get user posts from db
+    db.query(
+      'SELECT * FROM posts WHERE fk_userid = ?',
+      [userId],
+      (error, results) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send('Internal Server Error');
+        } else {
+          const videos = results;
+          //pass videos to frontend in res.render
+          res.render('profile', {
+            title: 'Profile',
+            css: ['../css/profile.css'],
+            videos: videos,
+          });
+        }
+      }
+    );
   } else {
-    // User is not logged in, redirect to login page
+    //not logged in
     res.redirect('/login');
   }
 });
 
-
+//route to handle porfile picture uploads
 router.post('/upload-profile-picture', upload.single('profilePicture'), async function (req, res) {
   if (req.session.user) {
+    //if they didnt provide a file flash an error
     if (!req.file) {
       req.flash('error', 'Please select a file');
-      req.session.save(function (error) {
+      req.session.save((error) => {
         return res.redirect('/users/profile');
       });
       return;
     }
 
     const userId = req.session.user.userId;
-    const profilePicturePath = '/images/uploads/' + req.file.filename;
 
-    // update database
+    //create unique filename
+    const profilePicturePath = `/public/images/uploads/${req.file.filename.split(".")[0]}${path.extname(req.file.filename)}`.replace('/public', '');
+    req.session.user.profile_picture = profilePicturePath;
+
+    //update pfp path in db
     db.query(
       'UPDATE users SET profile_picture = ? WHERE id = ?',
       [profilePicturePath, userId],
@@ -167,9 +189,10 @@ router.get('/logout', function (req, res) {
   });
 });
 
-function displayFlashMessage(req, success, message) {
+//helper to display flash messages in front end js
+async function displayFlashMessage(req, success, message) {
   req.flash(success, message);
-  req.session.save();
+  await req.session.save();
 }
 
 module.exports = router;

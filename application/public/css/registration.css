@@ -2,7 +2,7 @@
     font-family: 'Akshar';
 }
 
-form {
+#register-form {
     max-width: 400px;
     margin: 2rem auto;
     padding: 1rem;
@@ -10,25 +10,25 @@ form {
     box-shadow: 0 2px 4px #444;
 }
 
-form label {
+#register-form label {
     display: block;
     margin: 0.5rem 0;
 }
 
-form input[type="text"],
-form input[type="email"],
-form input[type="password"] {
+#register-form input[type="text"],
+#register-form input[type="email"],
+#register-form input[type="password"] {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
     font-size: 1rem;
 }
 
-form input[type="checkbox"] {
+#register-form input[type="checkbox"] {
     vertical-align: middle;
 }
 
-form input[type="submit"] {
+#register-form input[type="submit"] {
     display: inline-block;
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -39,6 +39,6 @@ form input[type="submit"] {
     margin-top: 1rem;
 }
 
-form input[type="submit"]:hover {
+#register-form input[type="submit"]:hover {
     background-color: #333;
 }

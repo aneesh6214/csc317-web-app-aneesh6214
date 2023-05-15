@@ -1,8 +1,8 @@
 <main>
   <div class="video-container">
     <video width="100%" height="600" controls>
-      <source src="http://localhost:3000/public{{post.video}}" type="video/mp4">
-      <source src="http://localhost:3000/public{{post.video}}" type="video/quicktime">
+      <source src="http://localhost:3000/{{post.video}}" type="video/mp4">
+      <source src="http://localhost:3000/{{post.video}}" type="video/quicktime">
       Your browser does not support the video tag.
     </video>
   </div>
@@ -25,8 +25,7 @@
       {{/else}}
       {{#each comments}}
       <div class="comment">
-        <img class="comment-avatar" src="../public/{{this.profile_picture}}" alt="Profile Pic">
-        <!--TODO: UPDATE WITH USER PROFILE PICTURE-->
+        <img class="comment-avatar" src="/public{{this.profile_picture}}" alt="Profile Pic">
         <div class="comment-header">
           <span class="comment-username">@{{this.username}}</span>
           <span class="comment-date">{{formatDate this.createdAt}}</span>

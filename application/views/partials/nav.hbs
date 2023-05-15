@@ -1,18 +1,19 @@
 <header>
     <h1>{{title}}</h1>
-    <div class="search-bar">
-        <input type="text" placeholder="Search...">
-        <button class="search-icon"></button>
-    </div>
+    <form id="search-form" action="/search" method="POST">
+        <div class="search-bar">
+            <input id="search-input" name="searchTerm" type="text" placeholder="Search..." value="{{searchTerm}}">
+            <button type="submit" class="search-icon" id="search-button" action="/search"> </button>
+        </div>
+    </form>
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/postvideo">Post Video</a></li>
-            <li><a href="/viewpost/1">View Post</a></li>
+            <li><a href="/postvideo">Post A Video</a></li>
             {{#if isLoggedIn}}
-                {{> dropdown}}
+            {{> dropdown}}
             {{else}}
-                <li><a href="/login">Login</a></li>
+            <li><a href="/login">Login</a></li>
             {{/if}}
         </ul>
     </nav>

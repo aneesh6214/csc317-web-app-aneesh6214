@@ -1,3 +1,4 @@
+//dependencies
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
@@ -5,8 +6,9 @@ var path = require('path');
 var fs = require('fs');
 var pool = require('../conf/database');
 var pathToFFMPEG = require('ffmpeg-static');
-const { exec } = require('child_process');
+var { exec } = require('child_process');
 
+//configure multer for file uploading
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
@@ -20,41 +22,47 @@ const upload = multer({
   }),
 });
 
+//HOME PAGE
 router.get('/', async function (req, res, next) {
   try {
+    //get all posts from database
     const [rows, fields] = await pool.promise().query(
       'SELECT * FROM posts'
     );
 
     const videos = rows;
 
-    res.render('index', { title: 'Home Page', videos: videos , css: ["index.css"]});
+    res.render('index', { title: 'Home Page', videos: videos, css: ["index.css"] });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-
+//LOGIN PAGE
 router.get('/login', function (req, res) {
   res.render('login', { title: 'Login', css: ["../css/login.css"] });
 });
 
+//REGISTRATION PAGE
 router.get('/register', function (req, res) {
   res.render('registration', { title: 'Register', css: ["../css/registration.css"], js: ["registration.js"] });
 });
 
+//POST A VIDEO PAGE
 router.get('/postvideo', (req, res) => {
   res.render('postvideo', { title: 'Post a Video', css: ['../css/postvideo.css'] });
 });
 
+//route for video submission
 router.post('/postvideo_submit', upload.single('video-file'), async (req, res) => {
-  // Check if the user is logged in
+  //validate user login
   if (!req.session.user) {
     req.flash('error', 'You must be logged in to post a video.');
-    await req.session.save();
-    res.redirect('/postvideo');
-    // Remove the video file if the user is not logged in
+    req.session.save(function (error) {
+      res.redirect('/postvideo');
+    })
+    //delete the file if the user is not logged in
     if (req.file) {
       fs.unlinkSync(req.file.path);
     }
@@ -62,13 +70,14 @@ router.post('/postvideo_submit', upload.single('video-file'), async (req, res) =
   }
 
   const { title, description } = req.body;
-  const videoPath = req.file.path.replace('public', '').replace(/\\/g, '/');
+  const videoPath = req.file.path.replace(/\\/g, '/');
   let thumbnailPath = '';
+  var ffmpeg = pathToFFMPEG.replace(/\\/g, '/');
 
-  // Generate thumbnail
+  //generate thumbnail
   try {
-    const destinationOfThumbnail = `./public/videos/uploads/thumbnails/thumbnail-${req.file.filename.split(".")[0]}.png`;
-    const thumbnailCommand = `"${pathToFFMPEG}" -ss 00:00:01 -i "${req.file.path}" -y -s 200x200 -vframes 1 -f image2 "${destinationOfThumbnail}"`;
+    const destinationOfThumbnail = `public/videos/uploads/thumbnails/thumbnail-${req.file.filename.split(".")[0]}.png`;
+    const thumbnailCommand = `"${ffmpeg}" -ss 00:00:01 -i "${videoPath}" -y -s 200x200 -vframes 1 -f image2 "${destinationOfThumbnail}"`;
     exec(thumbnailCommand, (error) => {
       if (error) {
         console.error(error);
@@ -76,7 +85,7 @@ router.post('/postvideo_submit', upload.single('video-file'), async (req, res) =
       } else {
         thumbnailPath = destinationOfThumbnail;
 
-        // Insert the post with the video and thumbnail paths into the database
+        //insert into db
         pool.query(
           'INSERT INTO posts (title, description, video, thumbnail, fk_userid) VALUES (?, ?, ?, ?, ?)',
           [title, description, videoPath, thumbnailPath, req.session.user.userId],
@@ -105,12 +114,11 @@ router.post('/postvideo_submit', upload.single('video-file'), async (req, res) =
   }
 });
 
-
-
-
+//VIEW A POST
 router.get('/viewpost/:id(\\d+)', async function (req, res) {
   const postId = req.params.id;
   try {
+    //query db for the post
     const [rows, fields] = await pool.promise().query(
       'SELECT * FROM posts WHERE id = ?',
       [postId]
@@ -146,9 +154,13 @@ router.get('/viewpost/:id(\\d+)', async function (req, res) {
   }
 });
 
+//route to handle deletion of posts
 router.get('/deletepost/:id(\\d+)', async function (req, res) {
   const postId = req.params.id;
+  const userId = req.session.user ? req.session.user.userId : -1; //set to -1 if not logged in
+
   try {
+    //query db for post
     const [rows, fields] = await pool.promise().query(
       'SELECT * FROM posts WHERE id = ?',
       [postId]
@@ -158,28 +170,43 @@ router.get('/deletepost/:id(\\d+)', async function (req, res) {
       return;
     }
 
-    // Delete video file from disk
     const post = rows[0];
-    const videoPath = path.join('public', post.video);
+
+    //check if they are the owner
+    if (userId !== post.fk_userid) {
+      req.flash('error', 'You are not the owner of this post.')
+      req.session.save(function (error) {
+        res.redirect('/');
+      });
+      return;
+    }
+
+    //delete video from disk
+    const videoPath = post.video;
     fs.unlinkSync(videoPath);
 
-    // Delete record from database
+    //delete post from db
     await pool.promise().query(
       'DELETE FROM posts WHERE id = ?',
-      [postId] 
+      [postId]
     );
-    res.redirect('/');
+    req.flash('success', 'Video Deleted Successfully');
+    req.session.save(function (error) {
+      res.redirect('/');
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
   }
 });
 
+//route to submit a comment
 router.post('/comment/:postId(\\d+)', function (req, res) {
   const postId = req.params.postId;
   const commentText = req.body.comment;
 
-  // Check if the user is logged in
+  //check if logged in
   if (!req.session.user) {
     res.status(401).send('Unauthorized');
     return;
@@ -187,7 +214,7 @@ router.post('/comment/:postId(\\d+)', function (req, res) {
 
   const userId = req.session.user.userId;
 
-  // Insert the comment into the comments table
+  //insert comments into comments table
   pool.query(
     'INSERT INTO comments (commentText, fk_authorId, fk_postId) VALUES (?, ?, ?)',
     [commentText, userId, postId],
@@ -201,5 +228,30 @@ router.post('/comment/:postId(\\d+)', function (req, res) {
     }
   );
 });
+
+//route to handle search bar
+router.post('/search', (req, res) => {
+
+  const searchTerm = req.body.searchTerm;
+
+  //search db for posts like the search term
+  pool.query(
+    'SELECT * FROM posts WHERE title LIKE ? OR description LIKE ?',
+    [`%${searchTerm}%`, `%${searchTerm}%`],
+    (error, results) => {
+      if (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        const searchResults = results;
+        req.flash('success', `Showing Results For: ${searchTerm}`);
+        req.session.save(function (error) {
+        });
+        res.render('index', { title: 'Home Page', searchResults: searchResults, searchTerm: searchTerm, css: ["index.css"] });
+      }
+    }
+  );
+});
+
 
 module.exports = router;

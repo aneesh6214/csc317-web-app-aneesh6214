@@ -2,10 +2,10 @@
   <section class="profile-section">
     <div class="profile-top">
       <div class="profile-picture">
-        <img src="http://localhost:3000/public{{user.profile_picture}}" alt="Profile Picture">
+        <img src="http://localhost:3000/public/{{user.profile_picture}}" alt="Profile Picture">
         <form action="/users/upload-profile-picture" method="POST" enctype="multipart/form-data">
-          <input type="file" name="profilePicture" accept="image/jpeg, image/png">
-          <button type="submit" class="change-picture-button">Change</button>
+          <button type="submit" class="change-picture-button">Change Icon</button>
+          <input type="file" class="choose-files-button" name="profilePicture" accept="image/jpeg, image/png">
         </form>
       </div>
       <div class="profile-details">
@@ -15,9 +15,17 @@
     </div>
     <div class="profile-bottom">
       <h2 class="profile-posts-title">Posts</h2>
-      <div class="profile-posts-grid">
-        <!-- USER VIDEO POSTS -->
+      {{#each videos}}
+      <div class="video-card">
+        <a href="/viewpost/{{this.id}}">
+          <img src="http://localhost:3000/{{this.thumbnail}}" alt="Video Thumbnail" controls>
+          <div class="thumbnail-overlay">
+            <a href="/deletepost/{{this.id}}" class="overlay-button delete-button">Delete</a>
+            <a href="/viewpost/{{this.id}}" class="overlay-button view-button">View</a>
+          </div>
+        </a>
       </div>
+      {{/each}}
     </div>
   </section>
 </main>
